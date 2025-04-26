@@ -1,7 +1,7 @@
 const SIP_SERVER = "sip.inntouch.jp";
 const SIP_DOMAIN = "its2.sozonext.com";
 const EXTENSION_NUMBER = "101";
-const EXTENSION_PASSWORD = "P@ssw0rd";
+const EXTENSION_PASSWORD = "p@ssw0rd";
 const EXTENSION_NUMBER_ = "801";
 
 // Swiper
@@ -13,29 +13,12 @@ const swiper = new Swiper(".swiper", {
   },
 });
 
+/**
+ * Event
+ */
 window.onload = () => {
   register();
 };
-
-// Android (Kotlin)
-window.chargingchange = (charging) => {
-  document.getElementById("charging").innerText = charging ? "True" : "False";
-};
-
-window.incoming = () => {
-  document.getElementById("modal").style.display = "flex";
-};
-
-document.getElementById("button_call").addEventListener("click", () => {
-  document.getElementById("modal").style.display = "flex";
-});
-
-document.addEventListener("click", (e) => {
-  const modal = document.getElementById("modal");
-  if (e.target == modal) {
-    modal.style.display = "none";
-  }
-});
 
 document.addEventListener("keydown", (e) => {
   document.getElementById("keyCode").innerHTML = e.key;
@@ -45,42 +28,52 @@ document.addEventListener("keypress", (e) => {
   document.getElementById("keyup").innerHTML = e.key;
 });
 
+/**
+ * Android Interface
+ */
 const register = () => {
-  const json = {
-    event: "register",
-    sip_server: SIP_SERVER,
-    sip_domain: SIP_DOMAIN,
-    extension_number: EXTENSION_NUMBER,
-    extension_password: EXTENSION_PASSWORD,
-  };
-  alert(JSON.stringify(json));
+  return Android.register(SIP_SERVER, SIP_DOMAIN, EXTENSION_NUMBER, EXTENSION_PASSWORD);
 };
 
 const call = () => {
-  const json = {
-    event: "call",
-    extension_number: EXTENSION_NUMBER_,
-  };
-  alert(JSON.stringify(json));
+  return Android.call(EXTENSION_NUMBER_);
 };
 
 const answer = () => {
-  const json = {
-    event: "answer",
-  };
-  alert(JSON.stringify(json));
+  return Android.answer();
 };
 
 const hangUp = () => {
-  const json = {
-    event: "hangUp",
-  };
-  alert(JSON.stringify(json));
+  return Android.hangUp();
 };
 
 const mute = () => {
-  const json = {
-    event: "mute",
-  };
-  alert(JSON.stringify(json));
+  return Android.mute();
 };
+
+const hold = () => {
+  return Android.hold();
+};
+
+
+document.addEventListener("click", (e) => {
+  const modal = document.getElementsByClassName("modal");
+  if (e.target == modal[0]) {
+    modal[0].style.display = "none";
+  }
+  if (e.target == modal[1]) {
+    modal[1].style.display = "none";
+  }
+  if (e.target == modal[2]) {
+    modal[2].style.display = "none";
+  }
+});
+document.getElementById("debugOpenIncomingCall").addEventListener("click", (e) => {
+  document.getElementById("incomingCall").style.display = "flex";
+});
+document.getElementById("debugOpenOutgoingCall").addEventListener("click", (e) => {
+  document.getElementById("outgoingCall").style.display = "flex";
+});
+document.getElementById("debugOpenDuringCall").addEventListener("click", (e) => {
+  document.getElementById("duringCall").style.display = "flex";
+});

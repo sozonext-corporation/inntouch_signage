@@ -8,9 +8,10 @@
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
-    <div id="button_call">
+    <div id="call" class="call">
       <img src="./images/button_call.png" />
     </div>
+
     <div class="swiper">
       <div class="swiper-wrapper">
         <div class="swiper-slide"><img src="./images/background-01.png" /></div>
@@ -20,43 +21,86 @@
         <div class="swiper-slide"><img src="./images/background-05.png" /></div>
       </div>
     </div>
-    <div id="modal" class="modal">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <div id="modalTitle" class="modal-title">フロント</div>
-            <div id="modalMessage" class="modal-message">呼び出し中...</div>
+
+    <!-- Incoming Call -->
+    <div id="incomingCall" class="modal modal--incoming" style="display: none">
+      <div class="modal__dialog">
+        <div class="modal__content">
+          <div class="modal__header">
+            <div class="modal__title">フロント</div>
+            <div class="modal__message">着信中...</div>
           </div>
-          <div class="modal-body">
-            <div id="" class="icon-wrapper">
-              <label class="icon icon-decline"><input type="button" /></label>
-              <span>拒否</span>
+          <div class="modal__body">
+            <div class="icon-wrapper">
+              <label class="icon icon--decline"><input id="incomingDecline" type="button" /></label>
+              <span class="icon-wrapper__label">拒否</span>
             </div>
             <div class="icon-wrapper">
-              <label class="icon icon-accept"><input type="button" /></label>
-              <span>応答</span>
-            </div>
-            <div class="icon-wrapper">
-              <label class="icon icon-mute"><input type="checkbox" /></label>
-              <span>消音</span>
-            </div>
-            <div class="icon-wrapper">
-              <label class="icon icon-end"><input type="button" /></label>
-              <span>終了</span>
-            </div>
-            <div class="icon-wrapper">
-              <label class="icon icon-hold"><input type="checkbox" /></label>
-              <span>保留</span>
+              <label class="icon icon--accept"><input id="incomingAccept" type="button" /></label>
+              <span class="icon-wrapper__label">応答</span>
             </div>
           </div>
         </div>
       </div>
     </div>
+
+    <!-- Outgoing Call -->
+    <div id="outgoingCall" class="modal modal--outgoing" style="display: none">
+      <div class="modal__dialog">
+        <div class="modal__content">
+          <div class="modal__header">
+            <div class="modal__title">フロント</div>
+            <div class="modal__message">呼び出し中...</div>
+          </div>
+          <div class="modal__body">
+            <div class="icon-wrapper">
+              <label class="icon icon--mute"><input id="outgoingMute" type="checkbox" /></label>
+              <span class="icon-wrapper__label">消音</span>
+            </div>
+            <div class="icon-wrapper">
+              <label class="icon icon--end"><input id="outgoingEnd" type="button" /></label>
+              <span class="icon-wrapper__label">キャンセル</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- During Call -->
+    <div id="duringCall" class="modal modal--during" style="display: none">
+      <div class="modal__dialog">
+        <div class="modal__content">
+          <div class="modal__header">
+            <div class="modal__title">フロント</div>
+            <div class="modal__message">00:00:00</div>
+          </div>
+          <div class="modal__body">
+            <div class="icon-wrapper">
+              <label class="icon icon--mute"><input id="duringMute" type="checkbox" /></label>
+              <span class="icon-wrapper__label">消音</span>
+            </div>
+            <div class="icon-wrapper">
+              <label class="icon icon--end"><input id="duringEnd" type="button" /></label>
+              <span class="icon-wrapper__label">終了</span>
+            </div>
+            <div class="icon-wrapper">
+              <label class="icon icon--hold"><input id="duringHold" type="checkbox" /></label>
+              <span class="icon-wrapper__label">保留</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="debug">
       <p>KEY_CODE: <span id="keyCode">F12</span></p>
       <p>CHARGING: <span id="charging">TRUE</span></p>
       <p>HOOK_SWITCH: <span id="hookSwitch">ON</span></p>
+      <button id="debugOpenIncomingCall">着信画面</button>
+      <button id="debugOpenOutgoingCall">発信画面</button>
+      <button id="debugOpenDuringCall">通話画面</button>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="./script.js"></script>
   </body>
