@@ -85,11 +85,11 @@ img {
   background-position: center;
 }
 
-.icon-wrapper span {
+.icon__wrapper span {
   font-size: 16px;
 }
 
-.icon>input {
+.icon > input {
   display: none;
 }
 
