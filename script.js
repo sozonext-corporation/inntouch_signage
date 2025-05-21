@@ -1,8 +1,24 @@
 const SIP_SERVER = "sip.inntouch.jp";
-const SIP_DOMAIN = "its2.sozonext.com";
+const SIP_DOMAIN = "magconn.inntouch.jp";
 const EXTENSION_NUMBER = "101";
-const EXTENSION_PASSWORD = "p@ssw0rd";
-const TARGET_EXTENSION_NUMBER = "801";
+const EXTENSION_PASSWORD = "P@ssw0rd";
+const TARGET_EXTENSION_NUMBER = "901";
+const TARGET_EXTENSION_DISPLAY_NAME = "フロント (901)";
+
+const ui = {
+  // Modal
+  modal: document.getElementById("modal"),
+  modalTitle: document.getElementById("modalTitle"),
+  modalMessage: document.getElementById("modalMessage"),
+  // Button
+  callButton: document.getElementById("callButton"),
+  // Modal Button
+  declineButton: document.getElementById("declineButton"),
+  acceptButton: document.getElementById("acceptButton"),
+  muteButton: document.getElementById("muteButton"),
+  endButton: document.getElementById("endButton"),
+  holdButton: document.getElementById("holdButton"),
+};
 
 // Swiper
 const swiper = new Swiper(".swiper", {
@@ -18,80 +34,169 @@ window.onload = () => {
   Android.register(SIP_SERVER, SIP_DOMAIN, EXTENSION_NUMBER, EXTENSION_PASSWORD);
 };
 document.addEventListener("keydown", (e) => {
-  document.getElementById("keyCode").innerHTML = e.key;
-});
-document.addEventListener("keypress", (e) => {
-  document.getElementById("keyup").innerHTML = e.key;
+  document.getElementById("keyCode").textContent = e.key;
+  const keyCode = e.key;
+  const hookSwitch = document.getElementById("hookSwitch").textContent;
+  if (hookSwitch == "ON" && keyCode == "F11") {
+    document.getElementById("hookSwitch").textContent = "OFF";
+    if (Android.call(TARGET_EXTENSION_NUMBER)) {
+      openOutgoingCallModal(TARGET_EXTENSION_DISPLAY_NAME);
+    }
+  } else if (hookSwitch == "OFF" && keyCode == "F12") {
+    document.getElementById("hookSwitch").textContent = "ON";
+    Android.hangUp();
+    closeModal();
+  }
 });
 
 /**
- * Call
+ * フロントに電話をする (WebView→Android)
  */
-document.getElementById("call").addEventListener("click", (e) => {
+ui.callButton.addEventListener("click", (e) => {
   if (Android.call(TARGET_EXTENSION_NUMBER)) {
-    document.getElementById("outgoingCall").style.display = "flex";
+    openOutgoingCallModal(TARGET_EXTENSION_DISPLAY_NAME);
   }
 });
 
-const handleEndClick = (e) => {
-  if (Android.hangUp()) {
-    document.getElementById("outgoingCall").style.display = "none";
-    document.getElementById("duringCall").style.display = "none";
-  }
-};
+/**
+ * 応答 (WebView→Android)
+ */
+ui.acceptButton.addEventListener("click", (e) => {
+  openDuringCallModal("");
+});
 
-const handleHoldClick = (e) => {
-  const isChecked = e.target.checked;
-  if (!Android.hold(isChecked)) {
-    e.preventDefault();
-    e.target.checked = !isChecked;
-  }
-};
+/**
+ * 拒否 (WebView→Android)
+ */
+ui.declineButton.addEventListener("click", (e) => {
+  Android.hangUp();
+  closeModal();
+});
 
-const handleMuteClick = (e) => {
+/**
+ * 終了 (WebView→Android)
+ */
+ui.endButton.addEventListener("click", (e) => {
+  Android.hangUp();
+  closeModal();
+});
+
+/**
+ * 消音 (WebView→Android)
+ */
+ui.muteButton.addEventListener("click", (e) => {
   const isChecked = e.target.checked;
   if (!Android.mute(isChecked)) {
     e.preventDefault();
     e.target.checked = !isChecked;
   }
-};
+});
 
 /**
- * Incoming Call
+ * 保留 (WebView→Android)
  */
-document.getElementById("incomingDecline").addEventListener("click", (e) => {
-  document.getElementById("incomingCall").style.display = "none";
-  return;
-});
-document.getElementById("incomingAccept").addEventListener("click", (e) => {
-  if (Android.answer()) {
-    document.getElementById("incomingCall").style.display = "none";
-    document.getElementById("duringCall").style.display = "flex";
+ui.holdButton.addEventListener("click", (e) => {
+  const isChecked = e.target.checked;
+  if (!Android.hold(isChecked)) {
+    e.preventDefault();
+    e.target.checked = !isChecked;
   }
 });
 
 /**
- * Outgoing Call
+ * 応答 (Android→WebView)
  */
-document.getElementById("outgoingMute").addEventListener("click", handleMuteClick);
-document.getElementById("outgoingEnd").addEventListener("click", handleEndClick);
+const onInviteAnswered = () => {
+  openDuringCallModal();
+};
 
 /**
- * During Call
+ * 着信 (Android→WebView)
  */
-document.getElementById("duringMute").addEventListener("click", handleMuteClick);
-document.getElementById("duringEnd").addEventListener("click", handleEndClick);
-document.getElementById("duringHold").addEventListener("click", handleHoldClick);
+const onIncomingCall = () => {
+  openIncomingCallModal("");
+};
+
+/**
+ * 拒否・終了 (Android→WebView)
+ */
+const onReject = () => {
+  closeModal();
+};
+
+const onChargingStatusChanged = (isCharging) => {
+  document.getElementById("charging").textContent = isCharging ? "TRUE" : "FALSE";
+  if (!isCharging) {
+    document.getElementById("keyCode").textContent = "";
+    document.getElementById("hookSwitch").textContent = "";
+  }
+};
+
+const closeModal = () => {
+  ui.modal.style.display = "none";
+  ui.modalTitle.textContent = "${modalTitle}";
+  ui.modalMessage.textContent = "${modalMessage}";
+  ui.muteButton.checked = false;
+  ui.holdButton.checked = false;
+  clearInterval(timerInterval);
+};
+
+const openIncomingCallModal = (modalTitle) => {
+  ui.modal.style.display = "flex";
+  ui.modalTitle.textContent = modalTitle;
+  ui.modalMessage.textContent = "着信中...";
+  ui.declineButton.parentElement.parentElement.style.display = "block";
+  ui.acceptButton.parentElement.parentElement.style.display = "block";
+  ui.muteButton.parentElement.parentElement.style.display = "none";
+  ui.endButton.parentElement.parentElement.style.display = "none";
+  ui.holdButton.parentElement.parentElement.style.display = "none";
+};
+
+const openOutgoingCallModal = (modalTitle) => {
+  ui.modal.style.display = "flex";
+  ui.modalTitle.textContent = modalTitle;
+  ui.modalMessage.textContent = "呼び出し中...";
+  ui.declineButton.parentElement.parentElement.style.display = "none";
+  ui.acceptButton.parentElement.parentElement.style.display = "none";
+  ui.muteButton.parentElement.parentElement.style.display = "block";
+  ui.endButton.parentElement.parentElement.style.display = "block";
+  ui.holdButton.parentElement.parentElement.style.display = "none";
+};
+
+let startTime = null;
+let timerInterval = null;
+
+const openDuringCallModal = () => {
+  ui.modal.style.display = "flex";
+  // ui.modalTitle.textContent = modalTitle;
+  ui.modalMessage.textContent = "00:00:00";
+  ui.declineButton.parentElement.parentElement.style.display = "none";
+  ui.acceptButton.parentElement.parentElement.style.display = "none";
+  ui.muteButton.parentElement.parentElement.style.display = "block";
+  ui.endButton.parentElement.parentElement.style.display = "block";
+  ui.holdButton.parentElement.parentElement.style.display = "block";
+  startTime = Date.now();
+  timerInterval = setInterval(updateCallDuration, 100);
+};
+
+function updateCallDuration() {
+  const elapsedMs = Date.now() - startTime;
+  const totalSeconds = Math.floor(elapsedMs / 1000);
+  const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, "0");
+  const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, "0");
+  const seconds = String(totalSeconds % 60).padStart(2, "0");
+  ui.modalMessage.textContent = `${hours}:${minutes}:${seconds}`;
+}
 
 /**
  * Debug
  */
-document.getElementById("debugOpenIncomingCall").addEventListener("click", (e) => {
-  document.getElementById("incomingCall").style.display = "flex";
+document.getElementById("openDebugIncomingCallButton").addEventListener("click", (e) => {
+  openIncomingCallModal("着信画面 (Debug)");
 });
-document.getElementById("debugOpenOutgoingCall").addEventListener("click", (e) => {
-  document.getElementById("outgoingCall").style.display = "flex";
+document.getElementById("openDebugOutgoingCallButton").addEventListener("click", (e) => {
+  openOutgoingCallModal("発信画面 (Debug)");
 });
-document.getElementById("debugOpenDuringCall").addEventListener("click", (e) => {
-  document.getElementById("duringCall").style.display = "flex";
+document.getElementById("openDebugDuringCallButton").addEventListener("click", (e) => {
+  openDuringCallModal("通話中画面 (Debug)");
 });

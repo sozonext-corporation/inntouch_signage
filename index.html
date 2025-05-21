@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
-    <div id="call" class="call">
+    <div id="callButton" class="call_button">
       <img src="./images/button_call.png" />
     </div>
 
@@ -22,69 +22,33 @@
       </div>
     </div>
 
-    <!-- Incoming Call -->
-    <div id="incomingCall" class="modal modal--incoming" style="display: none">
+    <!-- Modal -->
+    <div id="modal" class="modal" style="display: none">
       <div class="modal__dialog">
         <div class="modal__content">
           <div class="modal__header">
-            <div class="modal__title">フロント</div>
-            <div class="modal__message">着信中...</div>
+            <div class="modal__title" id="modalTitle">フロント</div>
+            <div class="modal__message" id="modalMessage">00:00:00</div>
           </div>
           <div class="modal__body">
             <div class="icon__wrapper">
-              <label class="icon icon--decline"><input id="incomingDecline" type="button" /></label>
+              <label class="icon icon--decline"><input id="declineButton" type="button" /></label>
               <span>拒否</span>
             </div>
             <div class="icon__wrapper">
-              <label class="icon icon--accept"><input id="incomingAccept" type="button" /></label>
+              <label class="icon icon--accept"><input id="acceptButton" type="button" /></label>
               <span>応答</span>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Outgoing Call -->
-    <div id="outgoingCall" class="modal modal--outgoing" style="display: none">
-      <div class="modal__dialog">
-        <div class="modal__content">
-          <div class="modal__header">
-            <div class="modal__title">フロント</div>
-            <div class="modal__message">呼び出し中...</div>
-          </div>
-          <div class="modal__body">
             <div class="icon__wrapper">
-              <label class="icon icon--mute"><input id="outgoingMute" type="checkbox" /></label>
+              <label class="icon icon--mute"><input id="muteButton" type="checkbox" /></label>
               <span>消音</span>
             </div>
             <div class="icon__wrapper">
-              <label class="icon icon--end"><input id="outgoingEnd" type="button" /></label>
-              <span>キャンセル</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- During Call -->
-    <div id="duringCall" class="modal modal--during" style="display: none">
-      <div class="modal__dialog">
-        <div class="modal__content">
-          <div class="modal__header">
-            <div class="modal__title">フロント</div>
-            <div class="modal__message">00:00:00</div>
-          </div>
-          <div class="modal__body">
-            <div class="icon__wrapper">
-              <label class="icon icon--mute"><input id="duringMute" type="checkbox" /></label>
-              <span>消音</span>
-            </div>
-            <div class="icon__wrapper">
-              <label class="icon icon--end"><input id="duringEnd" type="button" /></label>
+              <label class="icon icon--end"><input id="endButton" type="button" /></label>
               <span>終了</span>
             </div>
             <div class="icon__wrapper">
-              <label class="icon icon--hold"><input id="duringHold" type="checkbox" /></label>
+              <label class="icon icon--hold"><input id="holdButton" type="checkbox" /></label>
               <span>保留</span>
             </div>
           </div>
@@ -93,12 +57,12 @@
     </div>
 
     <div class="debug">
-      <p>KEY_CODE: <span id="keyCode">F12</span></p>
-      <p>CHARGING: <span id="charging">TRUE</span></p>
+      <p>KEY_CODE: <span id="keyCode"></span></p>
+      <p>CHARGING: <span id="charging"></span></p>
       <p>HOOK_SWITCH: <span id="hookSwitch">ON</span></p>
-      <button id="debugOpenIncomingCall">着信画面</button>
-      <button id="debugOpenOutgoingCall">発信画面</button>
-      <button id="debugOpenDuringCall">通話画面</button>
+      <button id="openDebugIncomingCallButton">着信画面</button>
+      <button id="openDebugOutgoingCallButton">発信画面</button>
+      <button id="openDebugDuringCallButton">通話画面</button>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
