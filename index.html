@@ -5,24 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
     <title>InnTouch SIGNAGE</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="./../../../style.css" />
   </head>
   <body>
     <div id="callButton" class="call_button">
-      <img src="./images/button_call.png" />
+      <img src="./../../../images/button_call.png" />
     </div>
 
     <div class="swiper">
       <div class="swiper-wrapper">
-        <div class="swiper-slide"><img src="./images/background-01.png" /></div>
-        <div class="swiper-slide"><img src="./images/background-02.png" /></div>
-        <div class="swiper-slide"><img src="./images/background-03.png" /></div>
-        <div class="swiper-slide"><img src="./images/background-04.png" /></div>
-        <div class="swiper-slide"><img src="./images/background-05.png" /></div>
+        <div class="swiper-slide"><img src="./../../../images/background-01.png" /></div>
+        <div class="swiper-slide"><img src="./../../../images/background-02.png" /></div>
+        <div class="swiper-slide"><img src="./../../../images/background-03.png" /></div>
+        <div class="swiper-slide"><img src="./../../../images/background-04.png" /></div>
+        <!-- div class="swiper-slide"><img src="./../../../images/background-05.png" /></div -->
       </div>
     </div>
 
-    <!-- Modal -->
     <div id="modal" class="modal" style="display: none">
       <div class="modal__dialog">
         <div class="modal__content">
@@ -57,15 +56,17 @@
     </div>
 
     <div class="debug">
-      <p>KEY_CODE: <span id="keyCode"></span></p>
-      <p>CHARGING: <span id="charging"></span></p>
-      <p>HOOK_SWITCH: <span id="hookSwitch">ON</span></p>
-      <button id="openDebugIncomingCallButton">着信画面</button>
-      <button id="openDebugOutgoingCallButton">発信画面</button>
-      <button id="openDebugDuringCallButton">通話画面</button>
+      <pre>DEBUG MENU</pre>
+      <pre>==============================</pre>
+      <pre>HOOK_SWITCH:&#009;<span id="hookSwitch">UNKNOWN</span></pre>
+      <pre>KEY_CODE:&#009;<span id="keyCode"></span></pre>
+      <pre>CHARGING:&#009;<span id="charging"></span></pre>
+      <pre>ATTACHING:&#009;<span id="attaching"></span></pre>
+      <pre>WIFI_LEVEL:&#009;<span id="wifiLevel"></span></pre>
+      <pre>BATTERY_LEVEL:&#009;<span id="batteryLevel"></span></pre>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <script src="./script.js"></script>
+    <script src="./../../../script.js"></script>
   </body>
 </html>
