@@ -16,7 +16,7 @@ const ui = {
   modalMessage: document.getElementById("modalMessage"),
   // Button
   buttonCall: document.getElementById("buttonCall"),
-  buttonCallVideo: document.getElementById("buttonCallVideo"),
+  buttonVideoCall: document.getElementById("buttonVideoCall"),
   // Modal Button
   buttonDecline: document.getElementById("buttonDecline"),
   buttonAccept: document.getElementById("buttonAccept"),
@@ -92,8 +92,8 @@ ui.buttonCall.addEventListener("click", (e) => {
 /**
  * ビデオ電話をする (WebView→Android)
  */
-ui.buttonCallVideo.addEventListener("click", (e) => {
-  Android.callVideo(TARGET_EXTENSION_NUMBER);
+ui.buttonVideoCall.addEventListener("click", (e) => {
+  Android.videoCall(TARGET_EXTENSION_NUMBER);
 });
 
 /**
