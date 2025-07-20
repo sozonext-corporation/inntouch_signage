@@ -8,8 +8,13 @@
     <link rel="stylesheet" href="./../../../style.css" />
   </head>
   <body>
-    <div id="callButton" class="call_button">
-      <img src="./../../../images/button_call.png" />
+    <div class="button__wrapper">
+      <button id="buttonCall" class="button">
+        <img src="./../../../images/button_call.png" />
+      </button>
+      <button id="buttonCallVideo" class="button">
+        <img src="./../../../images/button_video_call.png" />
+      </button>
     </div>
 
     <div class="swiper">
@@ -18,7 +23,6 @@
         <div class="swiper-slide"><img src="./../../../images/background-02.png" /></div>
         <div class="swiper-slide"><img src="./../../../images/background-03.png" /></div>
         <div class="swiper-slide"><img src="./../../../images/background-04.png" /></div>
-        <!-- div class="swiper-slide"><img src="./../../../images/background-05.png" /></div -->
       </div>
     </div>
 
@@ -27,7 +31,7 @@
         <div class="modal__content">
           <div class="modal__header">
             <div class="modal__title" id="modalTitle">フロント</div>
-            <div class="modal__message" id="modalMessage">00:00:00</div>
+            <div class="modal__message" id="modalMessage">00:00</div>
           </div>
           <div class="modal__body">
             <div class="icon__wrapper">

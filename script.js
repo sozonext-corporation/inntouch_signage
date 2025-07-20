@@ -4,10 +4,10 @@ const SIP_DOMAIN = path[3]; // xxxxxxxx.inntouch.jp
 const EXTENSION_NUMBER = path[4]; // 101
 const EXTENSION_PASSWORD = "P@ssw0rd";
 const TARGET_EXTENSION_NUMBER = path[5]; // 901
-const TARGET_EXTENSION_DISPLAY_NAME = "フロント (固定名称)";
+const TARGET_EXTENSION_DISPLAY_NAME = "フロント";
 
+let startTime = null;
 let timerInterval = null;
-let duringCallStartTime = null;
 
 const ui = {
   // Modal
@@ -15,7 +15,8 @@ const ui = {
   modalTitle: document.getElementById("modalTitle"),
   modalMessage: document.getElementById("modalMessage"),
   // Button
-  callButton: document.getElementById("callButton"),
+  buttonCall: document.getElementById("buttonCall"),
+  buttonCallVideo: document.getElementById("buttonCallVideo"),
   // Modal Button
   declineButton: document.getElementById("declineButton"),
   acceptButton: document.getElementById("acceptButton"),
@@ -80,12 +81,19 @@ const onHookSwitchOff = () => {
 };
 
 /**
- * フロントに電話をする (WebView→Android)
+ * 音声電話をする (WebView→Android)
  */
-ui.callButton.addEventListener("click", (e) => {
+ui.buttonCall.addEventListener("click", (e) => {
   if (Android.call(TARGET_EXTENSION_NUMBER)) {
     openOutgoingCallModal(TARGET_EXTENSION_DISPLAY_NAME);
   }
+});
+
+/**
+ * ビデオ電話をする (WebView→Android)
+ */
+ui.buttonCallVideo.addEventListener("click", (e) => {
+  Android.callVideo(TARGET_EXTENSION_NUMBER);
 });
 
 /**
@@ -161,10 +169,10 @@ const onReject = () => {
  */
 const onBatteryChargingStatusChanged = (isCharging) => {
   document.getElementById("charging").textContent = isCharging ? "TRUE" : "FALSE";
-  if (!isCharging) {
-    document.getElementById("keyCode").textContent = "";
-    document.getElementById("hookSwitch").textContent = "UNKNOWN";
-  }
+  // if (!isCharging) {
+  //   document.getElementById("keyCode").textContent = "";
+  //   document.getElementById("hookSwitch").textContent = "UNKNOWN";
+  // }
 };
 
 /**
@@ -216,26 +224,26 @@ const openOutgoingCallModal = (modalTitle) => {
 const openDuringCallModal = () => {
   ui.modal.style.display = "flex";
   // ui.modalTitle.textContent = modalTitle;
-  ui.modalMessage.textContent = "00:00:00";
+  ui.modalMessage.textContent = "00:00";
   ui.declineButton.parentElement.parentElement.style.display = "none";
   ui.acceptButton.parentElement.parentElement.style.display = "none";
   ui.muteButton.parentElement.parentElement.style.display = "block";
   ui.endButton.parentElement.parentElement.style.display = "block";
   ui.holdButton.parentElement.parentElement.style.display = "block";
   // 通話時間タイマーの開始
-  duringCallStartTime = Date.now();
+  startTime = Date.now();
   updateDuringCallTime();
   timerInterval = setInterval(updateDuringCallTime, 100);
 };
 
-function updateDuringCallTime() {
-  const ms = Date.now() - duringCallStartTime;
-  const totalSeconds = Math.floor(ms / 1000);
-  const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, "0");
-  const minutes = String(Math.floor((seconds % 3600) / 60)).padStart(2, "0");
-  const seconds = String(seconds % 60).padStart(2, "0");
-  ui.modalMessage.textContent = hours === "00" ? `${minutes}:${seconds}` : `${hours}:${minutes}:${seconds}`;
-}
+const updateDuringCallTime = () => {
+  const ms = Date.now() - startTime;
+  const ts = Math.floor(ms / 1000);
+  const hh = String(Math.floor(ts / 3600)).padStart(2, "0");
+  const mm = String(Math.floor((ts % 3600) / 60)).padStart(2, "0");
+  const ss = String(ts % 60).padStart(2, "0");
+  ui.modalMessage.textContent = hh === "00" ? `${mm}:${ss}` : `${hh}:${mm}:${ss}`;
+};
 
 /**
  * Update Wifi Level (Debug)
