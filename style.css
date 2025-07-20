@@ -107,31 +107,31 @@ img {
 }
 
 .icon--decline {
-  background-image: url(./images/icon_call_decline.png);
+  background-image: url(./images/icon_decline.png);
 }
 
 .icon--accept {
-  background-image: url(./images/icon_call_accept.png);
+  background-image: url(./images/icon_accept.png);
 }
 
 .icon--end {
-  background-image: url(./images/icon_call_end.png);
+  background-image: url(./images/icon_end.png);
 }
 
 .icon--mute {
-  background-image: url(./images/icon_call_mute_off.png);
+  background-image: url(./images/icon_mute_off.png);
 }
 
 .icon--mute:has(input:checked) {
-  background-image: url(./images/icon_call_mute_on.png);
+  background-image: url(./images/icon_mute_on.png);
 }
 
 .icon--hold {
-  background-image: url(./images/icon_call_hold_off.png);
+  background-image: url(./images/icon_hold_off.png);
 }
 
 .icon--hold:has(input:checked) {
-  background-image: url(./images/icon_call_hold_on.png);
+  background-image: url(./images/icon_hold_on.png);
 }
 
 .debug {

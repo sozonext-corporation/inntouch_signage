@@ -18,11 +18,11 @@ const ui = {
   buttonCall: document.getElementById("buttonCall"),
   buttonCallVideo: document.getElementById("buttonCallVideo"),
   // Modal Button
-  declineButton: document.getElementById("declineButton"),
-  acceptButton: document.getElementById("acceptButton"),
-  muteButton: document.getElementById("muteButton"),
-  endButton: document.getElementById("endButton"),
-  holdButton: document.getElementById("holdButton"),
+  buttonDecline: document.getElementById("buttonDecline"),
+  buttonAccept: document.getElementById("buttonAccept"),
+  buttonMute: document.getElementById("buttonMute"),
+  buttonEnd: document.getElementById("buttonEnd"),
+  buttonHold: document.getElementById("buttonHold"),
 };
 
 // Swiper
@@ -99,7 +99,7 @@ ui.buttonCallVideo.addEventListener("click", (e) => {
 /**
  * 応答 (WebView→Android)
  */
-ui.acceptButton.addEventListener("click", (e) => {
+ui.buttonAccept.addEventListener("click", (e) => {
   if (Android.answer()) {
     openDuringCallModal();
   }
@@ -108,7 +108,7 @@ ui.acceptButton.addEventListener("click", (e) => {
 /**
  * 拒否 (WebView→Android)
  */
-ui.declineButton.addEventListener("click", (e) => {
+ui.buttonDecline.addEventListener("click", (e) => {
   Android.hangUp();
   closeCallModal();
 });
@@ -116,7 +116,7 @@ ui.declineButton.addEventListener("click", (e) => {
 /**
  * 終了 (WebView→Android)
  */
-ui.endButton.addEventListener("click", (e) => {
+ui.buttonEnd.addEventListener("click", (e) => {
   Android.hangUp();
   closeCallModal();
 });
@@ -124,7 +124,7 @@ ui.endButton.addEventListener("click", (e) => {
 /**
  * 消音 (WebView→Android)
  */
-ui.muteButton.addEventListener("click", (e) => {
+ui.buttonMute.addEventListener("click", (e) => {
   const isChecked = e.target.checked;
   if (!Android.mute(isChecked)) {
     e.preventDefault();
@@ -135,7 +135,7 @@ ui.muteButton.addEventListener("click", (e) => {
 /**
  * 保留 (WebView→Android)
  */
-ui.holdButton.addEventListener("click", (e) => {
+ui.buttonHold.addEventListener("click", (e) => {
   const isChecked = e.target.checked;
   if (!Android.hold(isChecked)) {
     e.preventDefault();
@@ -190,8 +190,8 @@ const closeCallModal = () => {
   ui.modal.style.display = "none";
   ui.modalTitle.textContent = "${modalTitle}";
   ui.modalMessage.textContent = "${modalMessage}";
-  ui.muteButton.checked = false;
-  ui.holdButton.checked = false;
+  ui.buttonMute.checked = false;
+  ui.buttonHold.checked = false;
 
   // 通話時間タイマーの終了
   clearInterval(timerInterval);
@@ -203,33 +203,33 @@ const openIncomingCallModal = (modalTitle) => {
   ui.modal.style.display = "flex";
   ui.modalTitle.textContent = modalTitle;
   ui.modalMessage.textContent = "着信中...";
-  ui.declineButton.parentElement.parentElement.style.display = "block";
-  ui.acceptButton.parentElement.parentElement.style.display = "block";
-  ui.muteButton.parentElement.parentElement.style.display = "none";
-  ui.endButton.parentElement.parentElement.style.display = "none";
-  ui.holdButton.parentElement.parentElement.style.display = "none";
+  ui.buttonDecline.parentElement.parentElement.style.display = "block";
+  ui.buttonAccept.parentElement.parentElement.style.display = "block";
+  ui.buttonMute.parentElement.parentElement.style.display = "none";
+  ui.buttonEnd.parentElement.parentElement.style.display = "none";
+  ui.buttonHold.parentElement.parentElement.style.display = "none";
 };
 
 const openOutgoingCallModal = (modalTitle) => {
   ui.modal.style.display = "flex";
   ui.modalTitle.textContent = modalTitle;
   ui.modalMessage.textContent = "呼び出し中...";
-  ui.declineButton.parentElement.parentElement.style.display = "none";
-  ui.acceptButton.parentElement.parentElement.style.display = "none";
-  ui.muteButton.parentElement.parentElement.style.display = "block";
-  ui.endButton.parentElement.parentElement.style.display = "block";
-  ui.holdButton.parentElement.parentElement.style.display = "none";
+  ui.buttonDecline.parentElement.parentElement.style.display = "none";
+  ui.buttonAccept.parentElement.parentElement.style.display = "none";
+  ui.buttonMute.parentElement.parentElement.style.display = "block";
+  ui.buttonEnd.parentElement.parentElement.style.display = "block";
+  ui.buttonHold.parentElement.parentElement.style.display = "none";
 };
 
 const openDuringCallModal = () => {
   ui.modal.style.display = "flex";
   // ui.modalTitle.textContent = modalTitle;
   ui.modalMessage.textContent = "00:00";
-  ui.declineButton.parentElement.parentElement.style.display = "none";
-  ui.acceptButton.parentElement.parentElement.style.display = "none";
-  ui.muteButton.parentElement.parentElement.style.display = "block";
-  ui.endButton.parentElement.parentElement.style.display = "block";
-  ui.holdButton.parentElement.parentElement.style.display = "block";
+  ui.buttonDecline.parentElement.parentElement.style.display = "none";
+  ui.buttonAccept.parentElement.parentElement.style.display = "none";
+  ui.buttonMute.parentElement.parentElement.style.display = "block";
+  ui.buttonEnd.parentElement.parentElement.style.display = "block";
+  ui.buttonHold.parentElement.parentElement.style.display = "block";
   // 通話時間タイマーの開始
   startTime = Date.now();
   updateDuringCallTime();
